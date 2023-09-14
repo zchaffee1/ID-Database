@@ -1,4 +1,4 @@
-S,A12345678,Zack,Chaffee,19,BSc
+S,A12345678,Lat,Bin,19,BSc
 F,A14785923,Timothy,James,25,CS
 T,A88855539,Jennifer,Christanson,30,147896
 T,A99965478,Ashton,Charg,73,86323

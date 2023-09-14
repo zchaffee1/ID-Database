@@ -11,9 +11,6 @@ public class DatabaseApp {
     private static final int QUIT = 5;
 
     public void mainMenu(){
-        boolean invalidDecision = true;
-        int decision = -1;
-
         //Asks user for what they want to do
         System.out.println(
             "What would you like to do?\n" +
@@ -24,7 +21,7 @@ public class DatabaseApp {
             QUIT + ". Quit"
         );
 
-        decision = getInput(1,5);
+        int decision = getInput(1,5);
         
         switch(decision){
             case DISPLAY_DB:
@@ -74,8 +71,6 @@ public class DatabaseApp {
     //Contains all ways to display database
     private void display(){
         boolean invalidDecision = true;
-        int decision = -1;
-
         //Options for displaying
         System.out.println(
             "Would you like to:\n" + 
@@ -84,84 +79,72 @@ public class DatabaseApp {
             "3. Display database based on age"
         );
 
-        do{
-            try{
-                decision = scan.nextInt();
-                if(decision < 1 || decision > 3){
-                    throw new InputMismatchException();
-                }
-                invalidDecision = false;
-                scan.nextLine();
-            }
-            catch(InputMismatchException e){
-                System.out.println("Please enter a number 1-3");
-                scan.next();
-            }
-        }
-        while(invalidDecision);
-        
-        //Display entire database
-        if(decision == 1){
-            database.showID();
-        }
-        
-        //display dapabase based on position in university
-        else if(decision == 2){
-            char position = 's';
-            invalidDecision = true;
+        int decision = getInput(1,3);
 
-            //Position choices
-            System.out.println(
-                "What position would you like to display?\n"+
-                "T(staff)\tS(student)\tF(faculty)"
-            );
-            do{
-                try{
-                    position = scan.next().charAt(0);
-                    position = Character.toUpperCase(position);
-                    if(position != 'S' && position != 'F' && position != 'T'){
-                        throw new Exception();
+        switch(decision){
+            // display entire database
+            case 1: 
+                database.showID();
+                break;
+            // display database based on position in university
+            case 2:
+                char position = 's';
+                invalidDecision = true;
+
+                //Position choices
+                System.out.println(
+                    "What position would you like to display?\n"+
+                    "T(staff)\tS(student)\tF(faculty)"
+                );
+                do{
+                    try{
+                        position = scan.next().charAt(0);
+                        position = Character.toUpperCase(position);
+                        if(position != 'S' && position != 'F' && position != 'T'){
+                            throw new Exception();
+                        }
+                        invalidDecision = false;
+                        scan.nextLine();
                     }
-                    invalidDecision = false;
-                    scan.nextLine();
-                }
-                catch(Exception e){
-                    System.out.println("Please enter a valid position:\n"+
-                    "S(Student)\tF(Faculty)\tT(Staff)");
-                    scan.next();
-                }
-            }
-            while(invalidDecision); 
-            database.showID(position);
-        }
-
-        //Display database based on age
-        else{
-            int age = 0;
-            invalidDecision = true;
-            System.out.println(
-                "What age would you like to display?\n" +
-                "(Every age above the one selected will be displayed)"
-            );
-
-            do{
-                try{
-                    age = scan.nextInt();
-                    if(age < 1){
-                        throw new InputMismatchException();
+                    catch(Exception e){
+                        System.out.println("Please enter a valid position:\n"+
+                        "S(Student)\tF(Faculty)\tT(Staff)");
+                        scan.next();
                     }
-                    invalidDecision = false;
                 }
-                catch(InputMismatchException e){
-                    System.out.println("Please enter a valid age (must be above 0)");
-                    scan.next();
-                }
-            }
-            while(invalidDecision);
-            
-            database.showID(age);
-        }
+                while(invalidDecision); 
+                database.showID(position);
+                break;
+            // display database based on age
+            case 3:
+                int age = 0;
+                invalidDecision = true;
+                System.out.println(
+                    "What age would you like to display?\n" +
+                    "(Every age above the one selected will be displayed)"
+                );
 
+                do{
+                    try{
+                        age = scan.nextInt();
+                        if(age < 1){
+                            throw new InputMismatchException();
+                        }
+                        invalidDecision = false;
+                    }
+                    catch(InputMismatchException e){
+                        System.out.println("Please enter a valid age (must be above 0)");
+                        scan.next();
+                    }
+                }
+                while(invalidDecision);
+                
+                database.showID(age);
+                break;
+            default:
+                System.out.println("Error occured");
+                break;
+        }
         resume();
     }
 
