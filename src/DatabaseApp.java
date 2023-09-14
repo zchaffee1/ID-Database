@@ -4,6 +4,12 @@ public class DatabaseApp {
     private IDDatabase database = new IDDatabase();
     private Scanner scan = new Scanner(System.in);
 
+    private static final int DISPLAY_DB = 1;
+    private static final int ADD_ID = 2;
+    private static final int REMOVE_ID = 3;
+    private static final int SAVE_DB = 4;
+    private static final int QUIT = 5;
+
     public void mainMenu(){
         boolean invalidDecision = true;
         int decision = -1;
@@ -11,32 +17,58 @@ public class DatabaseApp {
         //Asks user for what they want to do
         System.out.println(
             "What would you like to do?\n" +
-            "1. Display database\n" +
-            "2. Add ID(s)\n" +
-            "3. Remove ID(s)\n" +
-            "4. Save database\n" +
-            "5. Quit"
+            DISPLAY_DB + ". Display database\n" +
+            ADD_ID + ". Add ID\n" +
+            REMOVE_ID + ". Remove ID\n" +
+            SAVE_DB + ". Save database\n" +
+            QUIT + ". Quit"
         );
+
+        decision = getInput(1,5);
+        
+        switch(decision){
+            case DISPLAY_DB:
+                display();
+                break;
+            case ADD_ID:
+                addID();
+                break;
+            case REMOVE_ID:
+                removeID();
+                break;
+            case SAVE_DB:
+                save();
+                break;
+            case QUIT:
+                System.out.println("Goodbye!");
+                break;
+            default:
+                System.out.println("Error occured");
+                break;
+        }
+    }
+
+    //Gets input from user
+    private int getInput(int min, int max){
+        int decision = -1;
+        boolean invalidDecision = true;
 
         do{
             try{
                 decision = scan.nextInt();
-                if (decision < 1 || decision > 5){
+                if (decision < min || decision > max){
                     throw new InputMismatchException();
                 }
                 invalidDecision = false;
             }
             catch (InputMismatchException e){
-                System.out.println("Please enter a number 1-5");
+                System.out.println("Please enter a number " + min + "-" + max);
                 scan.nextLine();
             }
         }
         while(invalidDecision);
 
-        if (decision == 1){display();}
-        if (decision == 2){addID();}
-        if (decision == 3){removeID();}
-        if (decision == 4){save();}
+        return decision;
     }
 
     //Contains all ways to display database
@@ -453,7 +485,7 @@ public class DatabaseApp {
         }
         resume();
     }
-
+    
     //saves database
     public void save(){
         try{database.save();        }
