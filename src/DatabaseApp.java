@@ -25,18 +25,23 @@ public class DatabaseApp {
         int decision = getInput(1,5);
         
         switch(decision){
+            // display database
             case DISPLAY_DB:
                 display();
                 break;
+            // add ID
             case ADD_ID:
-                addID();
+                addIdDecisions();
                 break;
+            // remove ID
             case REMOVE_ID:
                 removeID();
                 break;
+            // save database
             case SAVE_DB:
                 save();
                 break;
+            // quit
             case QUIT:
                 System.out.println("Goodbye!");
                 break;
@@ -69,7 +74,7 @@ public class DatabaseApp {
         return decision;
     }
 
-    //Contains all ways to display database
+    //Decide which way to display database
     private void display(){
         //Options for displaying
         System.out.println(
@@ -130,6 +135,7 @@ public class DatabaseApp {
         database.showID(position);
     }
 
+    // display database based on age
     private void displayAge(){
         boolean invalidDecision = true;
         int age = -1;
@@ -156,10 +162,7 @@ public class DatabaseApp {
     }
 
     //Contains all ways to add IDs
-    public void addID(){
-        boolean tryAgain = false;
-        boolean invalidDecision = true;
-
+    public void addIdDecisions(){
         //All options to add ID to database
         System.out.println(
             "Would you like to add:\n" +
@@ -168,229 +171,239 @@ public class DatabaseApp {
         );
         int decision = getInput(1,2);
 
-        invalidDecision = true;
         switch(decision){
             //Adds individual ID
             case 1:
-                char position = 'S';
-
-                //Asks for position of the ID in the university
-                System.out.println(
-                    "What is the position of the ID?\n" + 
-                    "S (Student)\tF (Faculty)\tT (Staff)");
-                do{
-                    try{
-                        position = scan.next().charAt(0);
-                        position = Character.toUpperCase(position);
-                        if(position != 'S'  && position != 'F' && position != 'T'){
-                            throw new InputMismatchException();
-                        }
-                        invalidDecision = false; 
-                        scan.nextLine();
-                    }
-                    catch(Exception e){
-                        System.out.println("Please enter S (Student)\tF(Faculty)\tT(Staff)");
-                    }
-                }
-                while(invalidDecision);
-
-                
-                String aNum = null, firstName = null, lastName = null, parameter = null;
-                Integer age = null;
-                invalidDecision = true;
-
-                //Asks for all other information of the ID
-                do{
-                    try{
-                        //Obtains A number from user
-                        System.out.println(
-                            "What is the A Number\n" + 
-                            "(Make sure the A is capital and is followed by 8 digits)\t ex. A12345678"
-                        );
-                        do{
-                            try{
-                                aNum = scan.nextLine();
-                                if(aNum.charAt(0) != 'A' || aNum.length() != 9){
-                                    throw new Unusable("Invalid A number");
-                                }
-                                invalidDecision = false;
-                            }
-                            catch(Unusable e){
-                                System.out.println("Please enter a valid A Number\n" + 
-                                "(Make sure the A is capital and is followed by 8 digits)\t ex. A12345678");
-                            }
-                        }
-                        while(invalidDecision);
-
-                        invalidDecision = true;
-                        //Obtains First Name From User
-                        System.out.println("What is the First Name?");
-                        do{
-                            try{
-                                firstName = scan.nextLine();
-                                if(firstName == null || firstName.length() == 0){
-                                    throw new Unusable("Invalid first name");
-                                }
-                                invalidDecision = false;
-                            }
-                            catch(Unusable e){
-                                System.out.println("Please enter the first name");
-                                scan.nextLine();
-                            }
-                        }
-                        while(invalidDecision);
-
-                        invalidDecision = true;
-                        //Obtains last name from user
-                        System.out.println("What is the Last Name?");
-                        do{
-                            try{
-                                lastName = scan.nextLine();
-                                if(lastName == null || lastName.length() == 0){
-                                    throw new Unusable("Invalid last name");
-                                }
-                                invalidDecision = false;
-                            }
-                            catch(Unusable e){
-                                System.out.println("Please enter the last name");
-                                scan.nextLine();
-                            }
-                        }
-                        while(invalidDecision);
-
-                        invalidDecision = true;
-                        //obtain age from user
-                        System.out.println("What is the age?");
-                        do{
-                            try{
-                                age = scan.nextInt();
-                                if(age < 1){
-                                    throw new Unusable("Invalid age");
-                                }
-                                invalidDecision = false;
-                                scan.nextLine();
-                            }
-                            catch(Exception e){
-                                System.out.println("Please enter a valid age (it must be above 0)");
-                                scan.nextLine();
-                            }
-                        }
-                        while(invalidDecision);
-
-                        //Adds ID based off of position
-                        invalidDecision = true;
-                        if(position == 'S'){
-                            System.out.println(
-                                "Please enter the degree being pursued\n" +
-                                "BSc\tMSc\tPhD"
-                            );
-                            do{
-                                try{
-                                    parameter = scan.nextLine();
-                                    if(!parameter.equals("BSc") && !parameter.equals("MSc") && !parameter.equals("PhD")){
-                                        throw new Unusable("Invalid degree");
-                                    }
-                                    invalidDecision = false;
-                                }
-                                catch(Exception e){
-                                    System.out.println("Please enter a valid degree\nBSc\tMSc\tPhD");
-                                }
-                            }
-                            while(invalidDecision);
-
-                            StudentID sid = new StudentID(position, aNum, firstName, lastName, age, parameter);
-                            database.add(sid);        
-                        }
-                        else if (position == 'T'){
-                            System.out.println("Please enter the salary earned");
-
-                            do{
-                                try{
-                                    parameter = scan.nextLine();
-                                    int salary = Integer.parseInt(parameter);
-                                    if(salary < 0){
-                                        throw new Unusable("Invalid salary");
-                                    }
-                                    invalidDecision = false;
-                                }
-                                catch(Exception e){
-                                    System.out.println("Please enter a valid salary");
-                                }
-                            }
-                            while(invalidDecision);
-
-                            StaffID sid = new StaffID(position, aNum, firstName, lastName, age, parameter);
-                            database.add(sid);
-                        }
-                        else{
-                            System.out.println("Please enter the Department worked for");
-                            do{
-                                try{
-                                    parameter = scan.nextLine();
-                                    if(parameter.equals(null) || parameter.length() < 2){
-                                        throw new Unusable("Invalid department");
-                                    }
-                                    invalidDecision = false;
-                                }
-                                catch(Exception e){
-                                    System.out.println("Please enter a valid department");
-                                }
-                            }
-                            while(invalidDecision);
-                            
-                            FacultyID fid = new FacultyID(position, aNum, firstName, lastName, age, parameter);
-                            database.add(fid);
-                        }
-                        System.out.println("ID add successful!");
-                        tryAgain = false;
-                    }
-                    catch(Unusable e){
-                        System.out.println(e.toString());                    
-                        tryAgain = tryAgain();
-                    }
-                }
-                while(tryAgain);
-            break;
+                addID();
+                break;
 
             //Add a file to the database
             case 2:
-                tryAgain = false;
-                System.out.println("What is the file name?\n(Remember to include file type i.e. .txt or .csv)");
-                do {
-                    try {
-                        scan.nextLine();
-                        String fileName = scan.nextLine();
-
-                        // Create a reference to the current directory
-                        File currentDir = new File(System.getProperty("user.dir"));
-                        // Get the parent directory (ID database)
-                        File parentDir = currentDir.getParentFile();
-                        // Create a new file reference in the parent directory with the provided file name
-                        File targetFile = new File(parentDir, fileName);
-
-                        if (!targetFile.exists()) {
-                            throw new Unusable("File not found: " + targetFile.getAbsolutePath());
-                        }
-
-                        database.add(targetFile.getAbsolutePath());
-                        System.out.println("File added successfully!");
-                    } catch (Unusable e) {
-                        System.out.println(e.toString());
-                        tryAgain = tryAgain();
-                        scan.nextLine();
-                    } catch (Exception e) {
-                        System.out.println("An error occurred.");
-                        tryAgain = tryAgain();
-                        scan.nextLine();
-                    }
-                } while (tryAgain);
-
-            break;
+                addFile();
+                break;
         }
 
         resume();
     }
 
+    //Adds individual ID
+    private void addID(){
+        boolean invalidDecision = true;
+        boolean tryAgain = false;
+
+        char position = 'S';
+
+        //Asks for position of the ID in the university
+        System.out.println(
+            "What is the position of the ID?\n" + 
+            "S (Student)\tF (Faculty)\tT (Staff)");
+        do{
+            try{
+                position = scan.next().charAt(0);
+                position = Character.toUpperCase(position);
+                if(position != 'S'  && position != 'F' && position != 'T'){
+                    throw new InputMismatchException();
+                }
+                invalidDecision = false; 
+                scan.nextLine();
+            }
+            catch(Exception e){
+                System.out.println("Please enter S (Student)\tF(Faculty)\tT(Staff)");
+            }
+        }
+        while(invalidDecision);
+
+        
+        String aNum = null, firstName = null, lastName = null, parameter = null;
+        Integer age = null;
+        invalidDecision = true;
+
+        //Asks for all other information of the ID
+        do{
+            try{
+                //Obtains A number from user
+                System.out.println(
+                    "What is the A Number\n" + 
+                    "(Make sure the A is capital and is followed by 8 digits)\t ex. A12345678"
+                );
+                do{
+                    try{
+                        aNum = scan.nextLine();
+                        if(aNum.charAt(0) != 'A' || aNum.length() != 9){
+                            throw new Unusable("Invalid A number");
+                        }
+                        invalidDecision = false;
+                    }
+                    catch(Unusable e){
+                        System.out.println("Please enter a valid A Number\n" + 
+                        "(Make sure the A is capital and is followed by 8 digits)\t ex. A12345678");
+                    }
+                }
+                while(invalidDecision);
+
+                invalidDecision = true;
+                //Obtains First Name From User
+                System.out.println("What is the First Name?");
+                do{
+                    try{
+                        firstName = scan.nextLine();
+                        if(firstName == null || firstName.length() == 0){
+                            throw new Unusable("Invalid first name");
+                        }
+                        invalidDecision = false;
+                    }
+                    catch(Unusable e){
+                        System.out.println("Please enter the first name");
+                        scan.nextLine();
+                    }
+                }
+                while(invalidDecision);
+
+                invalidDecision = true;
+                //Obtains last name from user
+                System.out.println("What is the Last Name?");
+                do{
+                    try{
+                        lastName = scan.nextLine();
+                        if(lastName == null || lastName.length() == 0){
+                            throw new Unusable("Invalid last name");
+                        }
+                        invalidDecision = false;
+                    }
+                    catch(Unusable e){
+                        System.out.println("Please enter the last name");
+                        scan.nextLine();
+                    }
+                }
+                while(invalidDecision);
+
+                invalidDecision = true;
+                //obtain age from user
+                System.out.println("What is the age?");
+                do{
+                    try{
+                        age = scan.nextInt();
+                        if(age < 1){
+                            throw new Unusable("Invalid age");
+                        }
+                        invalidDecision = false;
+                        scan.nextLine();
+                    }
+                    catch(Exception e){
+                        System.out.println("Please enter a valid age (it must be above 0)");
+                        scan.nextLine();
+                    }
+                }
+                while(invalidDecision);
+
+                //Adds ID based off of position
+                invalidDecision = true;
+                if(position == 'S'){
+                    System.out.println(
+                        "Please enter the degree being pursued\n" +
+                        "BSc\tMSc\tPhD"
+                    );
+                    do{
+                        try{
+                            parameter = scan.nextLine();
+                            if(!parameter.equals("BSc") && !parameter.equals("MSc") && !parameter.equals("PhD")){
+                                throw new Unusable("Invalid degree");
+                            }
+                            invalidDecision = false;
+                        }
+                        catch(Exception e){
+                            System.out.println("Please enter a valid degree\nBSc\tMSc\tPhD");
+                        }
+                    }
+                    while(invalidDecision);
+
+                    StudentID sid = new StudentID(position, aNum, firstName, lastName, age, parameter);
+                    database.add(sid);        
+                }
+                else if (position == 'T'){
+                    System.out.println("Please enter the salary earned");
+
+                    do{
+                        try{
+                            parameter = scan.nextLine();
+                            int salary = Integer.parseInt(parameter);
+                            if(salary < 0){
+                                throw new Unusable("Invalid salary");
+                            }
+                            invalidDecision = false;
+                        }
+                        catch(Exception e){
+                            System.out.println("Please enter a valid salary");
+                        }
+                    }
+                    while(invalidDecision);
+
+                    StaffID sid = new StaffID(position, aNum, firstName, lastName, age, parameter);
+                    database.add(sid);
+                }
+                else{
+                    System.out.println("Please enter the Department worked for");
+                    do{
+                        try{
+                            parameter = scan.nextLine();
+                            if(parameter.equals(null) || parameter.length() < 2){
+                                throw new Unusable("Invalid department");
+                            }
+                            invalidDecision = false;
+                        }
+                        catch(Exception e){
+                            System.out.println("Please enter a valid department");
+                        }
+                    }
+                    while(invalidDecision);
+                    
+                    FacultyID fid = new FacultyID(position, aNum, firstName, lastName, age, parameter);
+                    database.add(fid);
+                }
+                System.out.println("ID add successful!");
+                tryAgain = false;
+            }
+            catch(Unusable e){
+                System.out.println(e.toString());                    
+                tryAgain = tryAgain();
+            }
+        }
+        while(tryAgain);
+    }
+
+    //Adds a file to the database
+    private void addFile(){
+        boolean tryAgain = false;
+        System.out.println("What is the file name?\n(Remember to include file type i.e. .txt or .csv)");
+        do {
+            try {
+                scan.nextLine();
+                String fileName = scan.nextLine();
+
+                // Create a reference to the current directory
+                File currentDir = new File(System.getProperty("user.dir"));
+                // Get the parent directory (ID database)
+                File parentDir = currentDir.getParentFile();
+                // Create a new file reference in the parent directory with the provided file name
+                File targetFile = new File(parentDir, fileName);
+
+                if (!targetFile.exists()) {
+                    throw new Unusable("File not found: " + targetFile.getAbsolutePath());
+                }
+
+                database.add(targetFile.getAbsolutePath());
+                System.out.println("File added successfully!");
+            } catch (Unusable e) {
+                System.out.println(e.toString());
+                tryAgain = tryAgain();
+                scan.nextLine();
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                tryAgain = tryAgain();
+                scan.nextLine();
+            }
+        } while (tryAgain);
+    }
 
     //Contains all ways to remove IDs
     private void removeID(){
