@@ -52,10 +52,12 @@ public abstract class ID implements Printable{
     }
 
     @Override
-    public void print(){
-        System.out.printf("%-8c\t%-9s\t%-12s\t%-15s\t%-3d\t%s\n", getPosition(), getANum(),
-        getFirstName(),getLastName(),getAge(), getParameter());
+    public void print() {
+        System.out.printf("%-10c%-12s%-15s%-20s%-5d%-10s\n", 
+                          getPosition(), getANum(), getFirstName(), 
+                          getLastName(), getAge(), getParameter());
     }
+    
 
     protected abstract void setParameter(String parameter) throws Unusable;
 

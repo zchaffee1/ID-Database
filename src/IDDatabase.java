@@ -154,12 +154,12 @@ public class IDDatabase {
             System.out.println("Database is empty.");
         }
         else{
-            System.out.printf("%-8s\t%-9s\t%-12s\t%-15s\t%-3s\t%s\n","Position","A Number","First Name","Last Name","Age","Parameter");
+            System.out.printf("%-10s%-12s%-15s%-20s%-5s%-10s\n", "Position", "A Number", "First Name", "Last Name", "Age", "Parameter");
             for(int i = 0; i < database.size(); i++){
                 database.get(i).print();
             }
         }
-    }
+    }    
     
     //display all IDs based on position of ID, Staff, Faculty, or Student
     public void showID(char position){
@@ -172,7 +172,7 @@ public class IDDatabase {
                 if (database.get(i).getPosition() == (position)){
                     idCount++;
                     if(idCount == 1){
-                        System.out.printf("%-8s\t%-9s\t%-12s\t%-15s\t%-3s\t%s\n","Position","A Number", "First Name", "Last Name", "Age", "Parameter");
+                        System.out.printf("%-10s%-12s%-15s%-20s%-5s%-10s\n", "Position", "A Number", "First Name", "Last Name", "Age", "Parameter");
                     }
                     database.get(i).print();
                 }
@@ -198,7 +198,7 @@ public class IDDatabase {
                 if(database.get(i).getAge() > age){
                     idCount++;
                     if(idCount == 1){
-                        System.out.printf("%-8s\t%-9s\t%-12s\t%-15s\t%-3s\t%s\n","Position","A Number", "First Name", "Last Name", "Age", "Parameter");
+                        System.out.printf("%-10s%-12s%-15s%-20s%-5s%-10s\n", "Position", "A Number", "First Name", "Last Name", "Age", "Parameter");
                     }
                     database.get(i).print();
                 }
