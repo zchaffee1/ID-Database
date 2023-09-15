@@ -412,77 +412,73 @@ public class DatabaseApp {
         + "1. Lastname\n" 
         + "2. A Number" 
         );
-        Integer decision = null;
-        boolean invalidDecision = true;
+        int decision = getInput(1,2);
 
+        switch(decision){
+            //remove ID based off last name
+            case(1):
+                removeLastName();
+                break;
+            //remove ID based off A number
+            case(2):
+                removeANum();
+                break;
+            }
+            resume();
+    }
+
+    //remove ID based off Last Name
+    private void removeLastName(){
+        boolean invalidDecision = true;
+        String lastName;
         do{
             try{
-                decision = scan.nextInt();
-                if (decision < 1 || decision > 2){
-                    throw new InputMismatchException();
-                }
+                System.out.println("What is the last name you would like to remove?");
+                lastName = scan.nextLine();
+                database.removeLastName(lastName);
                 invalidDecision = false;
+                System.out.println("Removal Successful");
             }
-            catch (InputMismatchException e){
-                System.out.println("Please enter 1 or 2");
+            catch(Unusable e){
+                System.out.println("Last name not found in database");
+                invalidDecision = tryAgain();
+            }
+            catch(Exception e){
+                System.out.println("Error occured");
+                invalidDecision = tryAgain();
+            }
+        }
+        while(invalidDecision);
+    }
+
+    //remove ID based off A number
+    private void removeANum(){
+        String ANum;
+        boolean invalidDecision = true;
+        do{
+            try{
+                System.out.println(
+                    "Enter the A number of the id you would like to remove\n" + 
+                    "Remember to make sure the A is capital\t ex. A12345678"
+                );
+
+                ANum = scan.nextLine();
+                database.removeANum(ANum);
+                invalidDecision = false;
+                System.out.println("Removal Successful");
+            }
+            catch(Unusable e){
+                System.out.println("A number not forund in database");
+                invalidDecision = tryAgain();
+            }
+            catch(Exception e){
+                System.out.println("Error occured");
+                invalidDecision = tryAgain();
                 scan.next();
             }
         }
         while(invalidDecision);
 
-        scan.nextLine();
-
-        //remove ID based off last name
-        if(decision == 1){
-            String lastName;
-            do{
-                try{
-                    System.out.println("What is the last name you would like to remove?");
-                    lastName = scan.nextLine();
-                    database.removeLastName(lastName);
-                    invalidDecision = false;
-                    System.out.println("Removal Successful");
-                }
-                catch(Unusable e){
-                    System.out.println("Last name not found in database");
-                    invalidDecision = tryAgain();
-                }
-                catch(Exception e){
-                    System.out.println("Error occured");
-                    invalidDecision = tryAgain();
-                }
-            }
-            while(invalidDecision);
-        }
-
-        //remove ID based off A number
-        else{
-            String ANum;
-            do{
-                try{
-                    System.out.println(
-                        "Enter the A number of the id you would like to remove\n" + 
-                        "Remember to make sure the A is capital\t ex. A12345678"
-                    );
-
-                    ANum = scan.nextLine();
-                    database.removeANum(ANum);
-                    invalidDecision = false;
-                    System.out.println("Removal Successful");
-                }
-                catch(Unusable e){
-                    System.out.println("A number not forund in database");
-                    invalidDecision = tryAgain();
-                }
-                catch(Exception e){
-                    System.out.println("Error occured");
-                    invalidDecision = tryAgain();
-                    scan.next();
-                }
-            }
-            while(invalidDecision);
-        }
-        resume();
     }
     
     //saves database
